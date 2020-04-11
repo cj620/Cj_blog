@@ -1,0 +1,113 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'body'}}
+<section class="container" style="background-image: url(../public/img/123.jpg);width: 100%;margin-top: -20px;background-position: 0 -600px;min-height: 1000px;">
+   <div style="margin-left:200px;">{{include '../_partials/settings-nav.html'}}</div> 
+    <div class="col-md-5" >
+        <div>
+            <dl>
+                <form id="formId" enctype="multipart/form-data" >
+                <dt>头像设置</dt>
+                <dd>
+                        <img class="avatar" id="topic_author_avatar" height="150px"  width="150px" src="../{{user.avatar}}" alt="">
+                        <div>
+                            <div class="file-container"
+                                 style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle">
+                                <button class="btn btn-default fileinput-button" type="button">上传头像</button>
+                                <input type="file" name="image" id="jobData" onchange="loadFile(this.files)"
+                                       style="position:absolute;top:0;left:0;font-size:34px; opacity:0">
+                            </div>
+                            <span id="filename" style="vertical-align: middle">未上传文件</span>
+                        </div>
+                </dd>
+                </form>
+            </dl>
+        </div>
+        <form action="/settings/profile" method="post">
+            <input id="hiddenAvatar" type="hidden" name="avatar" value="{{user.avatar}}">
+            <div class="form-group">
+                <label for="email">账号</label>
+                <p class="form-control-static" id="email">{{user.email}}</p>
+                <input type="hidden" name="email" value="{{user.email}}">
+            </div>
+            <div class="form-group">
+                <label for="nickname">昵称</label>
+                <input type="text" class="form-control" id="nickname" name="nickname" placeholder=""
+                       value="{{user.nickname}}">
+            </div>
+
+            <div class="form-group">
+                <label for="bio">介绍</label>
+                <textarea class="form-control" rows="3" name="bio" id="bio">{{user.bio}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="">性别</label>
+                <div>
+                    {{if user.gender==0 }}
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" id="" value="0" checked> 男
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" value="1"> 女
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" value="-1"> 保密
+                    </label>
+                    {{else if user.gender==1 }}
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" value="0"> 男
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" value="1" checked> 女
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" value="-1"> 保密
+                    </label>
+                    {{else}}
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" value="0"> 男
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" value="1"> 女
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="gender" value="-1" checked> 保密
+                    </label>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="birthday">生日</label>
+                <input type="date" class="form-control" id="birthday" name="birthday" value="{{user.birthday}}"
+                       placeholder="">
+            </div>
+            <button type="submit" class="btn btn-success">保存</button>
+        </form>
+    </div>
+
+</section>
+<script>
+    function loadFile(file) {
+        $("#filename").html(file[0].name);
+        var data = new FormData($("#formId")[0]);
+        $.ajax({
+            url: '/upload',
+            type: 'post',
+            data: data,
+            processData: false,
+            contentType: false,
+            async: false,
+            success: function (data) {
+                console.log(data.path)
+                $('#topic_author_avatar').attr('src', '../'+data.path);
+                $('#hiddenAvatar').val(data.path);
+            },
+            error: function () {
+                console.log(666)
+            }
+        })
+    }
+</script>
+{{/block}}

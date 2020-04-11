@@ -1,0 +1,305 @@
+{{extend './_layouts/home.html'}}
+
+{{block 'title'}}{{'校园博客 - 首页'}}{{/block}}
+
+{{block 'body'}}
+<div class="content" style="background-image: url(../public/img/123.jpg);margin-top: -20px;background-position: 0 -600px;min-height: 600px;">
+   <!-- 导航栏 -->
+  <div class="left1">
+    <li ><a href="/zy" >我的主页</a></li>
+  <li><a href="/">大厅</a></li>
+  <li><a href="/settings/profile">信息设置</a></li>
+  <li><a href="/logout">退出</a></li></div>
+
+  <div class="mymsg box">
+    <div class="mytx" style="font-size: 20px;margin-left: 20px;">
+
+
+      <p><b>用户名</b> ：{{user.nickname}}</p>
+      <p><b>账号</b> ：{{user.email}}</p>
+      <p><b>性别</b> ：{{if user.gender==0}}{{gender="男"}}{{/if}} {{if user.gender==1}}{{gender="女"}}{{/if}}</p>
+      <p><b>个人简介</b> ：{{user.bio}}</p>
+      <p><b>创建时间</b> ：{{ user.created_time}}</p>
+  </div> 
+</div>
+  <!-- 广告栏 -->
+  <!-- <div class="ads">
+    1322
+  </div> -->
+
+    {{each topics.reverse()}} 
+    {{if $value.topic_author_id===user._id}} 
+   <!-- <div>{{ $value._id }}</div> -->
+    <!-- 内容盒子 -->
+    <div class="box">
+      <div class="touxiang">
+        <a href="#">
+          <img src="{{ $value.topic_author_avatar }}"  alt="{{ $value.topic_author_nick }}">
+        </a>
+      </div> 
+      <h4 class="username"><a href="#">{{ $value.topic_author_nick }}</a></h4>
+      <div class="title1">
+        <a href="/topics?id={{ $value._id }}">{{ $value.topic_title }}</a>
+      </div>
+                               <!-- 时间 -->
+      <div class="time1">{{$value.reply}} 个回复 • {{$value.traffic}} 次浏览 • {{$value.created_time}}</div>
+                               <!-- 评论 -->
+      <div class="pinglun"><a href="/topics?id={{ $value._id }}">评论</a></div>
+                              <!-- 对话框 -->
+      <div class="one">
+        <p class="content1">
+          {{$value.topic_content}}
+        </p>
+      </div>
+    </div>
+
+    <style>
+      .box{
+        width: 600px;
+        height: 200px;
+        margin: 0 auto;
+        background-color: whitesmoke;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        position: relative;
+      }
+      .touxiang img{
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        margin-left: 10px;
+        margin-top: 7px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
+      }
+      .username{
+        position: absolute;
+        left: 80px;
+        top: 17px;
+      }
+      .username a{
+        text-decoration: none;
+      }
+        .one{
+          height: 83px;
+          width: 580px;
+          
+    padding-left: 5px;
+    background-color:#cdcdcd ;
+    border-radius:20px;
+    /* text-align:center; */
+    /* line-height:100px; */
+    font-size: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    position: absolute;
+    left: 10px;
+    top: 90px;
+     }
+     .content1{
+       padding-left: 5px;
+       padding-right: 5px;
+       text-indent: 20px;
+       width: 100%;
+       height: 100%;
+       word-wrap: break-word;
+       display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+     }
+     .title1{
+    position: absolute;
+    top: 63px;
+    left: 70px;
+    font-weight: 700;
+     }
+     .title1 a{
+       font-size: 20px;
+      text-decoration: none;
+     }
+     .time1{
+    position: absolute;
+    bottom: 0;
+    left: 5px;
+     }
+     .pinglun{
+       position: absolute;
+       bottom: 3px;
+       right: 20px ;
+     }
+     .pinglun a{
+       font-weight: 700;
+     }
+     .ads{
+       position: absolute;
+       background-color: pink;
+       width: 100px;
+       left: 0;
+       top:70px
+     }
+     /* .mymsg{
+      height: 83px;
+          width: 580px;
+          
+    padding-left: 5px;
+    background-color:#cdcdcd ;
+    border-radius:20px;
+    font-size: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    position: absolute;
+    left: 10px;
+    top: 90px; 
+     }
+      .mytx{
+       width: 50px;
+       height: 50px;
+     } 
+     */
+    </style>
+    <!-- <script src="../public/js/jquery-1.12.4.js"></script>
+    <script>
+      $(window).scroll(function () {
+    var scrollTop = $(this).scrollTop();
+    var scrollHeight = $(document).height();
+    var windowHeight = $(this).height();
+    if (scrollTop + windowHeight == scrollHeight) {
+ 
+　　
+　　var page = Number($("#redgiftNextPage").attr('currentpage')) + 1;
+　　redgiftList(page);
+　　$("#redgiftNextPage").attr('currentpage', page + 1);
+ 
+    }
+  });
+    </script> -->
+    {{/if}}
+    {{/each}}
+</div>
+<style>
+  *{
+    text-decoration: none;
+    list-style: none;
+  }
+  .left1{
+    width: 70px;
+    background-color: #fff;
+    position: fixed;
+    left: 380px;
+    top: 70px;
+    border-radius: 10px;
+  }
+  .left1 li{
+    margin-top: 10px;
+    text-align: center;
+    
+  }
+  .left1 li:hover{
+    background-color: rgb(206, 206, 221);
+  }
+  
+  .box{
+    width: 600px;
+    height: 200px;
+    margin: 0 auto;
+    background-color: whitesmoke;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    position: relative;
+  }
+  .touxiang img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-top: 7px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
+  }
+  .username{
+    position: absolute;
+    left: 80px;
+    top: 17px;
+  }
+  .username a{
+    text-decoration: none;
+  }
+    .one{
+      height: 83px;
+      width: 580px;
+      
+padding-left: 5px;
+background-color:#cdcdcd ;
+border-radius:20px;
+/* text-align:center; */
+/* line-height:100px; */
+font-size: 20px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+position: absolute;
+left: 10px;
+top: 90px;
+ }
+ .content1{
+   padding-left: 5px;
+   padding-right: 5px;
+   text-indent: 20px;
+   width: 100%;
+   height: 100%;
+   word-wrap: break-word;
+   display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 3;
+overflow: hidden;
+ }
+ .title1{
+position: absolute;
+top: 63px;
+left: 70px;
+font-weight: 700;
+ }
+ .title1 a{
+   font-size: 20px;
+  text-decoration: none;
+ }
+ .time1{
+position: absolute;
+bottom: 0;
+left: 5px;
+ }
+ .pinglun{
+   position: absolute;
+   bottom: 3px;
+   right: 20px ;
+ }
+ .pinglun a{
+   font-weight: 700;
+ }
+ .ads{
+   position: absolute;
+   background-color: pink;
+   width: 100px;
+   left: 0;
+   top:70px
+ }
+ /* .mymsg{
+  height: 83px;
+      width: 580px;
+      
+padding-left: 5px;
+background-color:#cdcdcd ;
+border-radius:20px;
+font-size: 20px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+position: absolute;
+left: 10px;
+top: 90px; 
+ }
+  .mytx{
+   width: 50px;
+   height: 50px;
+ } 
+ */
+</style>
+
+{{/block}}
